@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.dao.ProductoDAO;
 import com.example.demo.models.document.Producto;
+import com.example.demo.models.service.ProductoService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,11 +22,11 @@ public class ProductoRestController {
 	private static final Logger log = LoggerFactory.getLogger(ProductoRestController.class);
 	
 	@Autowired
-	private ProductoDAO productoDAO;
+	private ProductoService productoService;
 	
 	@GetMapping
 	public Flux<Producto> index() {
-		Flux<Producto> flujoProductos = productoDAO.findAll();
+		Flux<Producto> flujoProductos = productoService.findAll();
 		return flujoProductos;
 	}
 
@@ -36,7 +37,7 @@ public class ProductoRestController {
 //		return producto;
 		
 //		2da forma, filtrando
-		Flux<Producto> flujoProductos = productoDAO.findAll();
+		Flux<Producto> flujoProductos = productoService.findAll();
 		Mono<Producto> producto = flujoProductos.filter(singleProduct -> singleProduct.getId().equals(id))
 				.next(); //Next retorna solo un mono
 		

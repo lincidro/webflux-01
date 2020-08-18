@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 
 import com.example.demo.models.dao.ProductoDAO;
 import com.example.demo.models.document.Producto;
+import com.example.demo.models.service.ProductoService;
 
 import reactor.core.publisher.Flux;
 
@@ -21,7 +22,7 @@ public class SpringBootWebfluxApirestApplication implements CommandLineRunner{
 	private static final Logger log = LoggerFactory.getLogger(SpringBootWebfluxApirestApplication.class);
 	
 	@Autowired
-	private ProductoDAO productoDAO;
+	private ProductoService productoService;
 	@Autowired
 	private ReactiveMongoTemplate mongoTemplate;
 
@@ -43,7 +44,7 @@ public class SpringBootWebfluxApirestApplication implements CommandLineRunner{
 				)
 		.flatMap(producto -> {
 			producto.setCreatedAt(new Date());
-			return productoDAO.save(producto);
+			return productoService.save(producto);
 		})
 		.subscribe(producto -> log.info("Mongo insert :" + producto.getId() + producto.getNombre()));
 	}
